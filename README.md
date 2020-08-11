@@ -1,6 +1,6 @@
 # Constraint by Humanoid - Unity Editor Extension
 
-A Unity editor extension that automatically sets various Constraint based on Unity's Humanoid structure.
+A Unity editor extension that configures IConstraint component based on Unity Humanoid Rules.
 
 ## Requirements
 
