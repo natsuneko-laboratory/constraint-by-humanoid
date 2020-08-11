@@ -73,7 +73,7 @@ namespace Assets.Mochizuki.ConstraintByHumanoid
             _src = ObjectPicker("Source GameObject", _src);
             _dst = ObjectPicker("Destination GameObject", _dst);
 
-            _isShowExcludeSettings = EditorGUILayout.Foldout(_isShowExcludeSettings, "Exclude Components");
+            _isShowExcludeSettings = EditorGUILayout.Foldout(_isShowExcludeSettings, "Exclude GameObjects");
             if (_isShowExcludeSettings)
             {
                 EditorGUI.indentLevel++;
@@ -233,6 +233,12 @@ namespace Assets.Mochizuki.ConstraintByHumanoid
 
             if (excludes.Contains(srcGameObject) || excludes.Contains(dstGameObject))
                 return;
+
+            if (dstGameObject.GetComponent<IConstraint>() != null)
+            {
+                Debug.LogWarning($"The GameObject `{dstGameObject.name}` has been skipped because it already has IConstraint.");
+                return;
+            }
 
             var constraint = AddConstraintToGameObject(dstGameObject, type);
             var source = new ConstraintSource { sourceTransform = srcGameObject.transform, weight = 1.0f };
