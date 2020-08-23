@@ -15,7 +15,7 @@ using UnityEngine.Animations;
 
 using Object = UnityEngine.Object;
 
-namespace Assets.Mochizuki.ConstraintByHumanoid
+namespace Mochizuki.ConstraintByHumanoid
 {
     public class ConstraintEditor : EditorWindow
     {
@@ -273,7 +273,7 @@ namespace Assets.Mochizuki.ConstraintByHumanoid
             }
         }
 
-        public static void PropertyField(EditorWindow editor, string property)
+        private static void PropertyField(EditorWindow editor, string property)
         {
             var so = new SerializedObject(editor);
             so.Update();
