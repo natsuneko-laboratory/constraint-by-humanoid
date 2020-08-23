@@ -1,0 +1,12 @@
+{
+  "name": "moe.mochizuki.constraint-by-humanoid",
+  "displayName": "Mochizuki.ConstraintByHumanoid",
+  "description": "A Unity editor extension that configures IConstraint component based on Unity Humanoid Rules.",
+  "version": "0.1.0",
+  "unity": "2018.3",
+  "keywords": [
+    "unity"
+  ],
+  "license": "MIT",
+  "dependencies": {}
+}
