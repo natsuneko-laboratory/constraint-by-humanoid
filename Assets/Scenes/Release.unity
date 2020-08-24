@@ -218,15 +218,17 @@ MonoBehaviour:
     - _name: 
       _archive:
         _name: 
-        _baseDir: 
-        _includes: []
+        _baseDir: Mochizuki/ConstraintByHumanoid
+        _includes:
+        - Mochizuki/ConstraintByHumanoid/README.txt
         _excludes: []
       _unityPackage:
         _name: 
         _baseDir: 
         _includes:
         - Mochizuki/ConstraintByHumanoid/**/*
-        _excludes: []
+        _excludes:
+        - Mochizuki/ConstraintByHumanoid/Packaging/**
   _preProcessors: []
   _postProcessors: []
 --- !u!4 &942243851
