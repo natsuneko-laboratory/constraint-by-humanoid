@@ -2,8 +2,6 @@ name: Release by Tag
 
 on:
   push:
-    branches:
-      - "feature/**"
     tags:
       - "v**"
 
