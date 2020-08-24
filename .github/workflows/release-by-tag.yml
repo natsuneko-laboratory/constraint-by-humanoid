@@ -20,7 +20,9 @@ jobs:
           add-apt-repository ppa:git-core/ppa -y
           apt update -qq
           apt install git git-lfs -y
-      - uses: actions/checkout@v2
+
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
           lfs: true
 
@@ -36,9 +38,11 @@ jobs:
       - name: Unity License Activation
         run: |
           /opt/Unity/Editor/Unity -quit -batchmode -nographics -silent-crashes -logFile -manualLicenseFile /root/.local/share/unity3d/Unity/Unity_lic.ulf || exit 0
+
       - name: Create Packages by Variation Packager
         run: |
           /opt/Unity/Editor/Unity -quit -batchmode -nographics -silent-crashes -logFile -projectPath . -executeMethod Mochizuki.ConstraintByHumanoid.Packaging.AutomatedRelease.Build
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
