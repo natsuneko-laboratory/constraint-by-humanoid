@@ -6,7 +6,7 @@ namespace Mochizuki.ConstraintByHumanoid.Packaging
     {
         public static void Build()
         {
-            CLI.BuildWithScene("Scenes/Release.unity", true);
+            CLI.BuildWithScene("Assets/Scenes/Release.unity", true);
         }
     }
 }
