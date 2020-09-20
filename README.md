@@ -19,7 +19,7 @@ Extract downloaded zip package and install UnityPackage into your project.
 ### Install via NPM
 
 Please add the following section to the top of the package manifest file (`Packages/manifest.json`).  
-If the package manifest file already has a `scopedRegistry` section, it will bee added there.
+If the package manifest file already has a `scopedRegistries` section, it will be added there.
 
 ```json
 {
