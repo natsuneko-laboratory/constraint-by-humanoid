@@ -64,6 +64,6 @@ jobs:
       - name: Publish to NPM
         run: |
           cd ./Assets/Mochizuki/ConstraintByHumanoid
-          # npm publish --access public
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
