@@ -1,5 +1,5 @@
 ﻿/*-------------------------------------------------------------------------------------------
- * Copyright (c) Fuyuno Mikazuki / Natsuneko. All rights reserved.
+ * Copyright (c) Natsuneko. All rights reserved.
  * Licensed under the MIT License. See LICENSE in the project root for license information.
  *------------------------------------------------------------------------------------------*/
 
@@ -20,7 +20,7 @@ namespace Mochizuki.ConstraintByHumanoid
     public class ConstraintEditor : EditorWindow
     {
         private const string Product = "Constraint by Humanoid";
-        private const string Version = "0.1.0";
+        private const string Version = "0.2.0";
         private readonly GUIContent[] _items;
 
         private Constraint _constraint;
@@ -131,7 +131,7 @@ namespace Mochizuki.ConstraintByHumanoid
             EditorGUI.BeginDisabledGroup(_errors.Count > 0);
 
             if (GUILayout.Button("変更を適用"))
-                ApplyChanges(_src, _dst, _excludes, _constraint);
+                ApplyChanges(_src, _dst, _excludes ?? Array.Empty<GameObject>(), _constraint);
 
             EditorGUI.EndDisabledGroup();
         }
