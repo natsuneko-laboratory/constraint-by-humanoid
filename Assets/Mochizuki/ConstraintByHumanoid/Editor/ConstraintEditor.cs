@@ -36,6 +36,7 @@ namespace Mochizuki.ConstraintByHumanoid
         private GameObject[] _excludes;
 
         private bool _isShowExcludeSettings;
+        private Vector2 _scroll;
 
         private GameObject _src;
 
@@ -78,42 +79,44 @@ namespace Mochizuki.ConstraintByHumanoid
 
             EditorGUI.BeginChangeCheck();
 
-            _src = ObjectPicker("Source GameObject", _src);
-            _dst = ObjectPicker("Destination GameObject", _dst);
-
-            _isShowExcludeSettings = EditorGUILayout.Foldout(_isShowExcludeSettings, "Exclude GameObjects");
-            if (_isShowExcludeSettings)
+            using (var scroller = new EditorGUILayout.ScrollViewScope(_scroll, GUILayout.ExpandHeight(true)))
             {
-                EditorGUI.indentLevel++;
+                _scroll = scroller.scrollPosition;
 
-                PropertyField(this, nameof(_excludes));
+                _src = ObjectPicker("Source GameObject", _src);
+                _dst = ObjectPicker("Destination GameObject", _dst);
 
-                var area = GUILayoutUtility.GetRect(0.0f, 50.0f, GUILayout.ExpandWidth(true));
-                GUI.Box(area, "Drag and Drop GameObjects that you want to exclude");
-
-                if (area.Contains(Event.current.mousePosition))
-                    switch (Event.current.type)
+                _isShowExcludeSettings = EditorGUILayout.Foldout(_isShowExcludeSettings, "Exclude GameObjects");
+                if (_isShowExcludeSettings)
+                    using (new EditorGUI.IndentLevelScope())
                     {
-                        case EventType.DragUpdated:
-                            DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-                            Event.current.Use();
-                            break;
+                        PropertyField(this, nameof(_excludes));
 
-                        case EventType.DragPerform:
-                            DragAndDrop.AcceptDrag();
+                        var area = GUILayoutUtility.GetRect(0.0f, 50.0f, GUILayout.ExpandWidth(true));
+                        GUI.Box(area, "Drag and Drop GameObjects that you want to exclude");
 
-                            var references = DragAndDrop.objectReferences;
-                            _excludes = (_excludes ?? Array.Empty<GameObject>()).Concat(references).Distinct().Cast<GameObject>().ToArray();
+                        if (area.Contains(Event.current.mousePosition))
+                            switch (Event.current.type)
+                            {
+                                case EventType.DragUpdated:
+                                    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+                                    Event.current.Use();
+                                    break;
 
-                            DragAndDrop.activeControlID = 0;
-                            Event.current.Use();
-                            break;
+                                case EventType.DragPerform:
+                                    DragAndDrop.AcceptDrag();
+
+                                    var references = DragAndDrop.objectReferences;
+                                    _excludes = (_excludes ?? Array.Empty<GameObject>()).Concat(references).Distinct().Cast<GameObject>().ToArray();
+
+                                    DragAndDrop.activeControlID = 0;
+                                    Event.current.Use();
+                                    break;
+                            }
                     }
 
-                EditorGUI.indentLevel--;
+                _constraint = (Constraint) EditorGUILayout.Popup(new GUIContent("Constraint"), (int) _constraint, _items);
             }
-
-            _constraint = (Constraint) EditorGUILayout.Popup(new GUIContent("Constraint"), (int) _constraint, _items);
 
             if (EditorGUI.EndChangeCheck())
             {
