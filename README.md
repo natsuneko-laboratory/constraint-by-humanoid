@@ -4,7 +4,7 @@ A Unity editor extension that configures IConstraint component based on Unity Hu
 
 ## Requirements
 
-- Unity 2018.4.20f1
+- Unity 2018.4.20f1 or greater
 
 ## Installation
 
@@ -39,10 +39,10 @@ And the following line to the `dependencies` section:
 "moe.mochizuki.constraint-by-humanoid": "VERSION"
 ```
 
-## How to use (Documentation / Japanese)
+## Documentation
 
-https://docs.mochizuki.moe/Unity/ConstraintByHumanoid/
+https://docs.mochizuki.moe/unity/constraint-by-humanoid/
 
 ## License
 
-MIT by [@MikazukiFuyuno](https://twitter.com/MikazukiFuyuno) and [@6jz](https://twitter.com/6jz)
+MIT by [@6jz](https://twitter.com/6jz)
