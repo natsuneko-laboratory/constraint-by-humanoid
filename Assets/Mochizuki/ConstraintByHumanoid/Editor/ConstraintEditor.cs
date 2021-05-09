@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -13,6 +14,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Animations;
 
+using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 
 namespace Mochizuki.ConstraintByHumanoid
@@ -20,7 +22,7 @@ namespace Mochizuki.ConstraintByHumanoid
     public class ConstraintEditor : EditorWindow
     {
         private const string Product = "Constraint by Humanoid";
-        private const string Version = "0.2.0";
+        private const string Version = "0.3.0";
         private readonly GUIContent[] _items;
 
         private Constraint _constraint;
@@ -48,7 +50,13 @@ namespace Mochizuki.ConstraintByHumanoid
                          .ToArray();
         }
 
-        [MenuItem("Mochizuki/Constraint by Humanoid")]
+        [MenuItem("Mochizuki/Constraint by Humanoid/Documents")]
+        public static void ShowDocuments()
+        {
+            Process.Start("https://docs.mochizuki.moe/unity/constraint-by-humanoid/");
+        }
+
+        [MenuItem("Mochizuki/Constraint by Humanoid/Editor")]
         public static void ShowWindow()
         {
             var window = GetWindow<ConstraintEditor>();
@@ -66,7 +74,7 @@ namespace Mochizuki.ConstraintByHumanoid
             EditorGUILayout.Space();
 
             using (new EditorGUILayout.HorizontalScope(GUI.skin.box))
-                EditorGUILayout.LabelField("Unity の Humanoid Rig の規約に沿っているアバター同士の Constraint の設定を自動で行うエディター拡張です。");
+                EditorGUILayout.LabelField("The Unity editor extension that automatically set-up constraints between two rigs based on Unity Humanoid Rig Standard.");
 
             EditorGUI.BeginChangeCheck();
 
@@ -111,17 +119,17 @@ namespace Mochizuki.ConstraintByHumanoid
             {
                 _errors.Clear();
                 if (_src == null)
-                    _errors.Add("Source GameObject を設定してください。");
+                    _errors.Add("Set the Source GameObject");
                 else
                     _errors.AddRange(CheckGameObject(_src));
 
                 if (_dst == null)
-                    _errors.Add("Destination GameObject を設定してください。");
+                    _errors.Add("Set the Destination GameObject");
                 else
                     _errors.AddRange(CheckGameObject(_dst));
 
                 if (_src == _dst)
-                    _errors.Add("Source と Destination に同じ GameObject は設定できません。");
+                    _errors.Add("Could not set the same GameObject as the Source and Destination");
             }
 
             if (_errors.Count > 0)
@@ -130,7 +138,7 @@ namespace Mochizuki.ConstraintByHumanoid
 
             EditorGUI.BeginDisabledGroup(_errors.Count > 0);
 
-            if (GUILayout.Button("変更を適用"))
+            if (GUILayout.Button("Apply Changes"))
                 ApplyChanges(_src, _dst, _excludes ?? Array.Empty<GameObject>(), _constraint);
 
             EditorGUI.EndDisabledGroup();
@@ -140,9 +148,9 @@ namespace Mochizuki.ConstraintByHumanoid
         {
             var errors = new List<string>();
             if (gameObject.GetComponent<Animator>() == null)
-                errors.Add($"`{gameObject.name}` は Animator Component を所持している必要があります。");
+                errors.Add($"`{gameObject.name}` must have an Animator Component");
             if (gameObject.GetComponentsInChildren<Transform>().All(w => w.name != "Armature"))
-                errors.Add($"`{gameObject.name}` は Armature GameObject を子に所持している必要があります。");
+                errors.Add($"`{gameObject.name}` must have an Armature GameObject as a child");
 
             return errors;
         }
@@ -234,9 +242,9 @@ namespace Mochizuki.ConstraintByHumanoid
             if (excludes.Contains(srcGameObject) || excludes.Contains(dstGameObject))
                 return;
 
-            if (dstGameObject.GetComponent<IConstraint>() != null)
+            if (dstGameObject.GetComponent(GetTypeFromConstraint(type)) != null)
             {
-                Debug.LogWarning($"The GameObject `{dstGameObject.name}` has been skipped because it already has IConstraint.");
+                Debug.LogWarning($"The GameObject `{dstGameObject.name}` has been skipped because it already has {type.ToString()}.");
                 return;
             }
 
@@ -244,6 +252,33 @@ namespace Mochizuki.ConstraintByHumanoid
             var source = new ConstraintSource { sourceTransform = srcGameObject.transform, weight = 1.0f };
             constraint.AddSource(source);
             constraint.constraintActive = true;
+        }
+
+        private static Type GetTypeFromConstraint(Constraint constraint)
+        {
+            switch (constraint)
+            {
+                case Constraint.AimConstraint:
+                    return typeof(AimConstraint);
+
+                case Constraint.LookAtConstraint:
+                    return typeof(LookAtConstraint);
+
+                case Constraint.ParentConstraint:
+                    return typeof(ParentConstraint);
+
+                case Constraint.PositionConstraint:
+                    return typeof(PositionConstraint);
+
+                case Constraint.RotationConstraint:
+                    return typeof(RotationConstraint);
+
+                case Constraint.ScaleConstraint:
+                    return typeof(ScaleConstraint);
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(constraint), constraint, null);
+            }
         }
 
         private static IConstraint AddConstraintToGameObject(GameObject obj, Constraint constraint)
