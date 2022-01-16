@@ -208,27 +208,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6ca7784d5c29ee489bccf9b5f35ea4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _name: ConstraintByHumanoid
   _version: 0.3.0
   _describe:
-    _output: Mochizuki/Packages
+    _output: NatsunekoLaboratory/Packages
     _variations:
-    - _name: 
+    - _name:
       _archive:
-        _name: 
-        _baseDir: Mochizuki/ConstraintByHumanoid
+        _name:
+        _baseDir: NatsunekoLaboratory/ConstraintByHumanoid
         _includes:
-        - Mochizuki/ConstraintByHumanoid/README.txt
+        - NatsunekoLaboratory/ConstraintByHumanoid/README.txt
         _excludes: []
       _unityPackage:
-        _name: 
-        _baseDir: 
+        _name:
+        _baseDir:
         _includes:
-        - Mochizuki/ConstraintByHumanoid/**/*
+        - NatsunekoLaboratory/ConstraintByHumanoid/**/*
         _excludes:
-        - Mochizuki/ConstraintByHumanoid/Packaging/**
+        - NatsunekoLaboratory/ConstraintByHumanoid/Packaging/**
   _preProcessors: []
   _postProcessors: []
 --- !u!4 &942243851

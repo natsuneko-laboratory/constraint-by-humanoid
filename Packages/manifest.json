@@ -1,7 +1,7 @@
 {
   "scopedRegistries": [
     {
-      "name": "Mochizuki",
+      "name": "NatsunekoLaboratory",
       "url": "https://registry.npmjs.com",
       "scopes": ["moe.mochizuki"]
     }

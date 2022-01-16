@@ -1,7 +1,7 @@
-﻿/*-------------------------------------------------------------------------------------------
- * Copyright (c) Natsuneko. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for license information.
- *------------------------------------------------------------------------------------------*/
+﻿// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  Copyright (c) Natsuneko. All rights reserved.
+//  Licensed under the License Zero Parity 7.0.0 (see LICENSE-PARITY file) and MIT (contributions, see LICENSE-MIT file) with exception License Zero Patron 1.0.0 (see LICENSE-PATRON file)
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ using UnityEngine.Animations;
 using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 
-namespace Mochizuki.ConstraintByHumanoid
+namespace NatsunekoLaboratory.ConstraintByHumanoid
 {
     public class ConstraintEditor : EditorWindow
     {
@@ -51,13 +51,13 @@ namespace Mochizuki.ConstraintByHumanoid
                          .ToArray();
         }
 
-        [MenuItem("Mochizuki/Constraint by Humanoid/Documents")]
+        [MenuItem("NatsunekoLaboratory/Constraint by Humanoid/Documents")]
         public static void ShowDocuments()
         {
             Process.Start("https://docs.mochizuki.moe/unity/constraint-by-humanoid/");
         }
 
-        [MenuItem("Mochizuki/Constraint by Humanoid/Editor")]
+        [MenuItem("NatsunekoLaboratory/Constraint by Humanoid/Editor")]
         public static void ShowWindow()
         {
             var window = GetWindow<ConstraintEditor>();
