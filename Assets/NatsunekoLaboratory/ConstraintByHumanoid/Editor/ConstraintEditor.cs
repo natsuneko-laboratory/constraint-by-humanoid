@@ -1,11 +1,10 @@
-﻿// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------------------
 //  Copyright (c) Natsuneko. All rights reserved.
-//  Licensed under the License Zero Parity 7.0.0 (see LICENSE-PARITY file) and MIT (contributions, see LICENSE-MIT file) with exception License Zero Patron 1.0.0 (see LICENSE-PATRON file)
-// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  Licensed under the MIT License. See LICENSE in the project root for license information.
+// ------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -14,7 +13,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Animations;
 
-using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 
 namespace NatsunekoLaboratory.ConstraintByHumanoid
@@ -51,13 +49,7 @@ namespace NatsunekoLaboratory.ConstraintByHumanoid
                          .ToArray();
         }
 
-        [MenuItem("NatsunekoLaboratory/Constraint by Humanoid/Documents")]
-        public static void ShowDocuments()
-        {
-            Process.Start("https://docs.mochizuki.moe/unity/constraint-by-humanoid/");
-        }
-
-        [MenuItem("NatsunekoLaboratory/Constraint by Humanoid/Editor")]
+        [MenuItem("Window/NatsunekoLaboratory/Constraint by Humanoid")]
         public static void ShowWindow()
         {
             var window = GetWindow<ConstraintEditor>();
@@ -115,7 +107,7 @@ namespace NatsunekoLaboratory.ConstraintByHumanoid
                             }
                     }
 
-                _constraint = (Constraint) EditorGUILayout.Popup(new GUIContent("Constraint"), (int) _constraint, _items);
+                _constraint = (Constraint)EditorGUILayout.Popup(new GUIContent("Constraint"), (int)_constraint, _items);
             }
 
             if (EditorGUI.EndChangeCheck())
