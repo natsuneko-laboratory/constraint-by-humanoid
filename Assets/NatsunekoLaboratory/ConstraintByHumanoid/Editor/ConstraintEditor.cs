@@ -20,7 +20,7 @@ namespace NatsunekoLaboratory.ConstraintByHumanoid
     public class ConstraintEditor : EditorWindow
     {
         private const string Product = "Constraint by Humanoid";
-        private const string Version = "0.3.0";
+        private const string Version = "0.4.0";
         private readonly GUIContent[] _items;
 
         private Constraint _constraint;
