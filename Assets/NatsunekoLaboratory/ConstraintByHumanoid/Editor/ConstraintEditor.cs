@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
 //  Copyright (c) Natsuneko. All rights reserved.
 //  Licensed under the MIT License. See LICENSE in the project root for license information.
 // ------------------------------------------------------------------------------------------
@@ -7,12 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-
 using UnityEditor;
-
 using UnityEngine;
-using UnityEngine.Animations;
-
+using VRC.Dynamics;
+using VRC.SDK3.Dynamics.Constraint.Components;
 using Object = UnityEngine.Object;
 
 namespace NatsunekoLaboratory.ConstraintByHumanoid
@@ -144,7 +142,7 @@ namespace NatsunekoLaboratory.ConstraintByHumanoid
             var errors = new List<string>();
             if (gameObject.GetComponent<Animator>() == null)
                 errors.Add($"`{gameObject.name}` must have an Animator Component");
-            if (gameObject.GetComponentsInChildren<Transform>().All(w => w.name != "Armature"))
+            if (gameObject.GetComponentsInChildren<Transform>().All(w => w.name.ToLower() != "armature"))
                 errors.Add($"`{gameObject.name}` must have an Armature GameObject as a child");
 
             return errors;
@@ -244,9 +242,9 @@ namespace NatsunekoLaboratory.ConstraintByHumanoid
             }
 
             var constraint = AddConstraintToGameObject(dstGameObject, type);
-            var source = new ConstraintSource { sourceTransform = srcGameObject.transform, weight = 1.0f };
-            constraint.AddSource(source);
-            constraint.constraintActive = true;
+            var source = new VRCConstraintSource { SourceTransform = srcGameObject.transform, Weight = 1.0f };
+            constraint.Sources.Add(source);
+            constraint.ActivateConstraint();
         }
 
         private static Type GetTypeFromConstraint(Constraint constraint)
@@ -254,49 +252,49 @@ namespace NatsunekoLaboratory.ConstraintByHumanoid
             switch (constraint)
             {
                 case Constraint.AimConstraint:
-                    return typeof(AimConstraint);
+                    return typeof(VRCAimConstraint);
 
                 case Constraint.LookAtConstraint:
-                    return typeof(LookAtConstraint);
+                    return typeof(VRCLookAtConstraint);
 
                 case Constraint.ParentConstraint:
-                    return typeof(ParentConstraint);
+                    return typeof(VRCParentConstraint);
 
                 case Constraint.PositionConstraint:
-                    return typeof(PositionConstraint);
+                    return typeof(VRCPositionConstraint);
 
                 case Constraint.RotationConstraint:
-                    return typeof(RotationConstraint);
+                    return typeof(VRCRotationConstraint);
 
                 case Constraint.ScaleConstraint:
-                    return typeof(ScaleConstraint);
+                    return typeof(VRCScaleConstraint);
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(constraint), constraint, null);
             }
         }
 
-        private static IConstraint AddConstraintToGameObject(GameObject obj, Constraint constraint)
+        private static VRCConstraintBase AddConstraintToGameObject(GameObject obj, Constraint constraint)
         {
             switch (constraint)
             {
                 case Constraint.AimConstraint:
-                    return obj.AddComponent<AimConstraint>();
+                    return obj.AddComponent<VRCAimConstraint>();
 
                 case Constraint.LookAtConstraint:
-                    return obj.AddComponent<LookAtConstraint>();
+                    return obj.AddComponent<VRCLookAtConstraint>();
 
                 case Constraint.ParentConstraint:
-                    return obj.AddComponent<ParentConstraint>();
+                    return obj.AddComponent<VRCParentConstraint>();
 
                 case Constraint.PositionConstraint:
-                    return obj.AddComponent<PositionConstraint>();
+                    return obj.AddComponent<VRCPositionConstraint>();
 
                 case Constraint.RotationConstraint:
-                    return obj.AddComponent<RotationConstraint>();
+                    return obj.AddComponent<VRCRotationConstraint>();
 
                 case Constraint.ScaleConstraint:
-                    return obj.AddComponent<ScaleConstraint>();
+                    return obj.AddComponent<VRCScaleConstraint>();
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(constraint), constraint, null);
