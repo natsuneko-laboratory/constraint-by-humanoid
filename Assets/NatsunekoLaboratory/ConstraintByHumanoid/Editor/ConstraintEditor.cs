@@ -9,8 +9,11 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Animations;
+#if VRC_SDK_Base_2022
 using VRC.Dynamics;
 using VRC.SDK3.Dynamics.Constraint.Components;
+#endif
 using Object = UnityEngine.Object;
 
 namespace NatsunekoLaboratory.ConstraintByHumanoid
@@ -235,19 +238,31 @@ namespace NatsunekoLaboratory.ConstraintByHumanoid
             if (excludes.Contains(srcGameObject) || excludes.Contains(dstGameObject))
                 return;
 
+#if VRC_SDK_Base_2022
+            if (dstGameObject.GetComponent(GetTypeFromVrcConstraint(type)) != null)
+            {
+                Debug.LogWarning($"The GameObject `{dstGameObject.name}` has been skipped because it already has {type.ToString()}.");
+                return;
+            }
+            var constraint = AddVrcConstraintToGameObject(dstGameObject, type);
+            var source = new VRCConstraintSource { SourceTransform = srcGameObject.transform, Weight = 1.0f };
+            constraint.Sources.Add(source);
+            constraint.ActivateConstraint();
+#else
             if (dstGameObject.GetComponent(GetTypeFromConstraint(type)) != null)
             {
                 Debug.LogWarning($"The GameObject `{dstGameObject.name}` has been skipped because it already has {type.ToString()}.");
                 return;
             }
-
             var constraint = AddConstraintToGameObject(dstGameObject, type);
-            var source = new VRCConstraintSource { SourceTransform = srcGameObject.transform, Weight = 1.0f };
-            constraint.Sources.Add(source);
-            constraint.ActivateConstraint();
+            var source = new ConstraintSource { sourceTransform = srcGameObject.transform, weight = 1.0f };
+            constraint.AddSource(source);
+            constraint.constraintActive = true;
+#endif
         }
-
-        private static Type GetTypeFromConstraint(Constraint constraint)
+        
+#if VRC_SDK_Base_2022
+        private static Type GetTypeFromVrcConstraint(Constraint constraint)
         {
             switch (constraint)
             {
@@ -274,7 +289,7 @@ namespace NatsunekoLaboratory.ConstraintByHumanoid
             }
         }
 
-        private static VRCConstraintBase AddConstraintToGameObject(GameObject obj, Constraint constraint)
+        private static VRCConstraintBase AddVrcConstraintToGameObject(GameObject obj, Constraint constraint)
         {
             switch (constraint)
             {
@@ -300,7 +315,61 @@ namespace NatsunekoLaboratory.ConstraintByHumanoid
                     throw new ArgumentOutOfRangeException(nameof(constraint), constraint, null);
             }
         }
+#else
+        private static Type GetTypeFromConstraint(Constraint constraint)
+        {
+            switch (constraint)
+            {
+                case Constraint.AimConstraint:
+                    return typeof(AimConstraint);
 
+                case Constraint.LookAtConstraint:
+                    return typeof(LookAtConstraint);
+
+                case Constraint.ParentConstraint:
+                    return typeof(ParentConstraint);
+
+                case Constraint.PositionConstraint:
+                    return typeof(PositionConstraint);
+
+                case Constraint.RotationConstraint:
+                    return typeof(RotationConstraint);
+
+                case Constraint.ScaleConstraint:
+                    return typeof(ScaleConstraint);
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(constraint), constraint, null);
+            }
+        }
+
+        private static IConstraint AddConstraintToGameObject(GameObject obj, Constraint constraint)
+        {
+            switch (constraint)
+            {
+                case Constraint.AimConstraint:
+                    return obj.AddComponent<AimConstraint>();
+
+                case Constraint.LookAtConstraint:
+                    return obj.AddComponent<LookAtConstraint>();
+
+                case Constraint.ParentConstraint:
+                    return obj.AddComponent<ParentConstraint>();
+
+                case Constraint.PositionConstraint:
+                    return obj.AddComponent<PositionConstraint>();
+
+                case Constraint.RotationConstraint:
+                    return obj.AddComponent<RotationConstraint>();
+
+                case Constraint.ScaleConstraint:
+                    return obj.AddComponent<ScaleConstraint>();
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(constraint), constraint, null);
+            }
+        }
+#endif
         private static void PropertyField(EditorWindow editor, string property)
         {
             var so = new SerializedObject(editor);
