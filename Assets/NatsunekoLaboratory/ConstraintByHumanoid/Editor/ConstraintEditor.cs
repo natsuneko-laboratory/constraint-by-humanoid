@@ -7,12 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-
 using UnityEditor;
-
 using UnityEngine;
 using UnityEngine.Animations;
-
+#if VRC_SDK_AVATARS_2022
+using VRC.Dynamics;
+using VRC.SDK3.Dynamics.Constraint.Components;
+#endif
 using Object = UnityEngine.Object;
 
 namespace NatsunekoLaboratory.ConstraintByHumanoid
@@ -144,7 +145,7 @@ namespace NatsunekoLaboratory.ConstraintByHumanoid
             var errors = new List<string>();
             if (gameObject.GetComponent<Animator>() == null)
                 errors.Add($"`{gameObject.name}` must have an Animator Component");
-            if (gameObject.GetComponentsInChildren<Transform>().All(w => w.name != "Armature"))
+            if (gameObject.GetComponentsInChildren<Transform>().All(w => w.name.ToLower() != "armature"))
                 errors.Add($"`{gameObject.name}` must have an Armature GameObject as a child");
 
             return errors;
@@ -237,18 +238,84 @@ namespace NatsunekoLaboratory.ConstraintByHumanoid
             if (excludes.Contains(srcGameObject) || excludes.Contains(dstGameObject))
                 return;
 
+#if VRC_SDK_AVATARS_2022
+            if (dstGameObject.GetComponent(GetTypeFromVrcConstraint(type)) != null)
+            {
+                Debug.LogWarning($"The GameObject `{dstGameObject.name}` has been skipped because it already has {type.ToString()}.");
+                return;
+            }
+            var constraint = AddVrcConstraintToGameObject(dstGameObject, type);
+            var source = new VRCConstraintSource { SourceTransform = srcGameObject.transform, Weight = 1.0f };
+            constraint.Sources.Add(source);
+            constraint.ActivateConstraint();
+#else
             if (dstGameObject.GetComponent(GetTypeFromConstraint(type)) != null)
             {
                 Debug.LogWarning($"The GameObject `{dstGameObject.name}` has been skipped because it already has {type.ToString()}.");
                 return;
             }
-
             var constraint = AddConstraintToGameObject(dstGameObject, type);
             var source = new ConstraintSource { sourceTransform = srcGameObject.transform, weight = 1.0f };
             constraint.AddSource(source);
             constraint.constraintActive = true;
+#endif
+        }
+        
+#if VRC_SDK_AVATARS_2022
+        private static Type GetTypeFromVrcConstraint(Constraint constraint)
+        {
+            switch (constraint)
+            {
+                case Constraint.AimConstraint:
+                    return typeof(VRCAimConstraint);
+
+                case Constraint.LookAtConstraint:
+                    return typeof(VRCLookAtConstraint);
+
+                case Constraint.ParentConstraint:
+                    return typeof(VRCParentConstraint);
+
+                case Constraint.PositionConstraint:
+                    return typeof(VRCPositionConstraint);
+
+                case Constraint.RotationConstraint:
+                    return typeof(VRCRotationConstraint);
+
+                case Constraint.ScaleConstraint:
+                    return typeof(VRCScaleConstraint);
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(constraint), constraint, null);
+            }
         }
 
+        private static VRCConstraintBase AddVrcConstraintToGameObject(GameObject obj, Constraint constraint)
+        {
+            switch (constraint)
+            {
+                case Constraint.AimConstraint:
+                    return obj.AddComponent<VRCAimConstraint>();
+
+                case Constraint.LookAtConstraint:
+                    return obj.AddComponent<VRCLookAtConstraint>();
+
+                case Constraint.ParentConstraint:
+                    return obj.AddComponent<VRCParentConstraint>();
+
+                case Constraint.PositionConstraint:
+                    return obj.AddComponent<VRCPositionConstraint>();
+
+                case Constraint.RotationConstraint:
+                    return obj.AddComponent<VRCRotationConstraint>();
+
+                case Constraint.ScaleConstraint:
+                    return obj.AddComponent<VRCScaleConstraint>();
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(constraint), constraint, null);
+            }
+        }
+#else
         private static Type GetTypeFromConstraint(Constraint constraint)
         {
             switch (constraint)
@@ -302,7 +369,7 @@ namespace NatsunekoLaboratory.ConstraintByHumanoid
                     throw new ArgumentOutOfRangeException(nameof(constraint), constraint, null);
             }
         }
-
+#endif
         private static void PropertyField(EditorWindow editor, string property)
         {
             var so = new SerializedObject(editor);

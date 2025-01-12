@@ -1,7 +1,7 @@
 {
     "name": "NatsunekoLaboratory.ConstraintByHumanoid",
+    "rootNamespace": "",
     "references": [],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
@@ -10,5 +10,13 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.vrchat.avatars",
+            "expression": "3.5.0",
+            "define": "VRC_SDK_AVATARS_2022"
+        }
+    ],
+    "noEngineReferences": false
 }
