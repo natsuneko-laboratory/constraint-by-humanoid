@@ -13,9 +13,9 @@
     "defineConstraints": [],
     "versionDefines": [
         {
-            "name": "com.vrchat.base",
+            "name": "com.vrchat.avatars",
             "expression": "3.5.0",
-            "define": "VRC_SDK_Base_2022"
+            "define": "VRC_SDK_AVATARS_2022"
         }
     ],
     "noEngineReferences": false

@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------------------
 //  Copyright (c) Natsuneko. All rights reserved.
 //  Licensed under the MIT License. See LICENSE in the project root for license information.
 // ------------------------------------------------------------------------------------------
@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Animations;
-#if VRC_SDK_Base_2022
+#if VRC_SDK_AVATARS_2022
 using VRC.Dynamics;
 using VRC.SDK3.Dynamics.Constraint.Components;
 #endif
@@ -238,7 +238,7 @@ namespace NatsunekoLaboratory.ConstraintByHumanoid
             if (excludes.Contains(srcGameObject) || excludes.Contains(dstGameObject))
                 return;
 
-#if VRC_SDK_Base_2022
+#if VRC_SDK_AVATARS_2022
             if (dstGameObject.GetComponent(GetTypeFromVrcConstraint(type)) != null)
             {
                 Debug.LogWarning($"The GameObject `{dstGameObject.name}` has been skipped because it already has {type.ToString()}.");
@@ -261,7 +261,7 @@ namespace NatsunekoLaboratory.ConstraintByHumanoid
 #endif
         }
         
-#if VRC_SDK_Base_2022
+#if VRC_SDK_AVATARS_2022
         private static Type GetTypeFromVrcConstraint(Constraint constraint)
         {
             switch (constraint)
