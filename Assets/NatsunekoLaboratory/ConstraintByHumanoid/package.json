@@ -1,12 +1,23 @@
 {
-  "name": "moe.natsuneko.constraint-by-humanoid",
-  "displayName": "NatsunekoLaboratory.ConstraintByHumanoid",
-  "description": "A Unity editor extension that configures IConstraint component based on Unity Humanoid Rules.",
-  "version": "0.3.0",
-  "unity": "2018.3",
+  "name": "cat.natsuneko.constraint-by-humanoid",
+  "version": "0.5.0",
+  "displayName": "Constraint by Humanoid",
+  "description": "A Unity editor extension that configures IConstraint component based on Unity Humanoid Rules. ",
+  "unity": "2019.4",
   "keywords": [
-    "unity"
+    "Constraint",
+    "Humanoid",
+    "Automatic",
+    "VRChat",
+    "Avatar"
   ],
-  "license": "License Zero Parity 7.0.0 (see LICENSE-PARITY file) and MIT (contributions, see LICENSE-MIT file) with exception License Zero Patron 1.0.0 (see LICENSE-PATRON file)",
+  "author": {
+    "name": "Natsune Mochizuki",
+    "email": "me@natsuneko.cat",
+    "url": "https://github.com/natsuneko-laboratory/constraint-by-humanoid"
+  },
+  "license": "MIT",
+  "documentationUrl": "https://docs.natsuneko.cat/en-us/constraint-by-humanoid/",
+  "licensesUrl": "https://github.com/natsuneko-laboratory/constraint-by-humanoid/blob/main/LICENSE",
   "dependencies": {}
 }
