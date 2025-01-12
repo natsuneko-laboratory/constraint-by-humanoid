@@ -4,8 +4,7 @@ A Unity editor extension that configures IConstraint component based on Unity Hu
 
 ## Requirements
 
-- Unity 2018.4.20f1
-- Unity 2019.4.31f1
+- Unity 2018.4 or later
 
 ## How to use
 
