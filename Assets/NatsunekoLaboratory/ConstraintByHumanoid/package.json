@@ -1,6 +1,6 @@
 {
   "name": "cat.natsuneko.constraint-by-humanoid",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "displayName": "Constraint by Humanoid",
   "description": "A Unity editor extension that configures IConstraint component based on Unity Humanoid Rules. ",
   "unity": "2019.4",
