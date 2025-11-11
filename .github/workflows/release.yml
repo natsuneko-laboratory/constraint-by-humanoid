@@ -18,7 +18,7 @@ jobs:
   vars:
     runs-on: ubuntu-slim
     outputs:
-      version: ${{ steps.vars.outputs.version }}
+      version: ${{ steps.version.outputs.version }}
     steps:
       - name: Set version
         id: version
