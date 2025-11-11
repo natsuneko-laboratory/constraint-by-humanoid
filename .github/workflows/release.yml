@@ -108,4 +108,4 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           packages: |
-            dist/ConstraintByHumanoid-${{ needs.vars.outputs.version }}.zip
+            dist/VPMPackages/ConstraintByHumanoid-${{ needs.vars.outputs.version }}.zip
